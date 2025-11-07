@@ -1,0 +1,29 @@
+name: Hourly (Both)
+
+on:
+  schedule:
+    - cron: "10 * * * 5"
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  tag-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOW=$(date +%s)
+          echo "Trigger" > cli-"$NOW".txt
+          git add .
+          git commit -m "Hourly update via CLI"
+          TAG="hourly-$NOW"
+          git tag "$TAG"
+          git push --atomic origin main "$TAG"
+          gh workflow run triggered.yml --ref "$TAG"

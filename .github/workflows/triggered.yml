@@ -1,0 +1,12 @@
+name: Triggered
+
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Triggered worfklow for ${{ github.ref }}"
