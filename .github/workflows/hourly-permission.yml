@@ -2,7 +2,7 @@ name: Hourly (Permission)
 
 on:
   schedule:
-    - cron: "15 * * * 5"
+    - cron: "45 * * * 5"
 
 permissions:
   actions: write
