@@ -2,7 +2,7 @@ name: Hourly (CLI)
 
 on:
   schedule:
-    - cron: "0 * * * 5"
+    - cron: "15 * * * 5"
 
 permissions:
   contents: write
@@ -19,10 +19,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           NOW=$(date +%s)
-          echo "Trigger" > cli-"$NOW".txt
-          git add .
-          git commit -m "Hourly update via CLI"
-          TAG="hourly-$NOW"
+          TAG="hourly-cli-$NOW"
           git tag "$TAG"
           git push --atomic origin main "$TAG"
           gh workflow run triggered.yml --ref "$TAG"
